@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Дмитрий Бессонов](https://up.htmlacademy.ru/javascript/21/user/1483875).
-* Наставник: `Неизвестно`.
+* Наставник: [Дмитрий Аверин](https://up.htmlacademy.ru/javascript/21/user/1061531).
 
 ---
 
