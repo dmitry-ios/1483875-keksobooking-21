@@ -61,13 +61,13 @@ const shuffleArray = function (array) {
 };
 
 const makeElements = function (limit, producer) {
-  let offers = [];
+  let elements = [];
 
   for (let i = 0; i < limit; i++) {
-    offers[i] = producer(i);
+    elements[i] = producer(i);
   }
 
-  return offers;
+  return elements;
 };
 
 const generateAvatarUrl = function (index) {
@@ -76,21 +76,25 @@ const generateAvatarUrl = function (index) {
   return `img/avatars/user${suffix}.png`;
 };
 
-const AVATARS = makeElements(SIZE_OF_MOCK, generateAvatarUrl);
-const MAP_WIDTH = document.querySelector(`.map__pins`).clientWidth;
+const avatars = makeElements(SIZE_OF_MOCK, generateAvatarUrl);
+const map = document.querySelector(`.map`);
+const mapPins = document.querySelector(`.map__pins`);
+const mapWidth = mapPins.clientWidth;
+const pinTemplate = document.querySelector(`#pin`);
+const pinItem = pinTemplate.content.querySelector(`.map__pin`);
 
 const makeOffer = function (index) {
   shuffleArray(PHOTOS);
   shuffleArray(FEATURES);
-  const MAX_FEATURES = randomRange(1, FEATURES.length);
-  const features = FEATURES.slice(0, MAX_FEATURES);
-  const MAX_PHOTOS = randomRange(1, PHOTOS.length);
-  const photos = PHOTOS.slice(0, MAX_PHOTOS);
+  const maxFeatues = randomRange(1, FEATURES.length);
+  const features = FEATURES.slice(0, maxFeatues);
+  const maxPhotos = randomRange(1, PHOTOS.length);
+  const photos = PHOTOS.slice(0, maxPhotos);
   const locationX = randomRange(0, getMapMaxWidth());
   const locationY = randomRange(MIN_LOCATION_Y, MAX_LOCATION_Y);
   return {
     "author": {
-      "avatar": AVATARS[index]
+      "avatar": avatars[index]
     },
     "offer": {
       "title": TITLES[index],
@@ -113,10 +117,10 @@ const makeOffer = function (index) {
 };
 
 const getMapMaxWidth = function () {
-  return randomRange(0, MAP_WIDTH);
+  return randomRange(0, mapWidth);
 };
 
-const renderOffer = function (offer, pinItem) {
+const renderOffer = function (offer) {
   const pinElement = pinItem.cloneNode(true);
   const imgElement = pinElement.querySelector(`img`);
 
@@ -129,11 +133,9 @@ const renderOffer = function (offer, pinItem) {
 
 const makeFragmetWithOffers = function (offers) {
   const fragment = document.createDocumentFragment();
-  const pinTemplate = document.querySelector(`#pin`);
-  const pinItem = pinTemplate.content.querySelector(`.map__pin`);
 
   for (let i = 0; i < offers.length; i++) {
-    const offerElement = renderOffer(offers[i], pinItem);
+    const offerElement = renderOffer(offers[i]);
 
     fragment.appendChild(offerElement);
   }
@@ -158,7 +160,7 @@ const compareOfferByY = function (firstOffer, secondOffer) {
 
 const showPins = function () {
   shuffleArray(TITLES);
-  shuffleArray(AVATARS);
+  shuffleArray(avatars);
 
   const offers = makeElements(SIZE_OF_MOCK, makeOffer);
 
@@ -166,12 +168,10 @@ const showPins = function () {
   offers.sort(compareOfferByY);
 
   // Показываем карту
-  const map = document.querySelector(`.map`);
   map.classList.remove(`map--faded`);
 
   // Создаем метки и помещаем на карту
   const fragmentWithOffers = makeFragmetWithOffers(offers);
-  const mapPins = document.querySelector(`.map__pins`);
   mapPins.appendChild(fragmentWithOffers);
 };
 
