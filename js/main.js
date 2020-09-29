@@ -26,6 +26,13 @@ const TYPES = [
   `bungalow`
 ];
 
+const VALUES_TYPE = {
+  'flat': `Квартира`,
+  'bungalow': `Бунгало`,
+  'house': `Дом`,
+  'palace': `Дворец`
+};
+
 const TIMES = [
   `12:00`,
   `13:00`,
@@ -82,6 +89,9 @@ const mapPins = document.querySelector(`.map__pins`);
 const mapWidth = mapPins.clientWidth;
 const pinTemplate = document.querySelector(`#pin`);
 const pinItem = pinTemplate.content.querySelector(`.map__pin`);
+const cardTemplate = document.querySelector(`#card`);
+const mapCard = cardTemplate.content.querySelector(`.map__card`);
+const filtersContainer = document.querySelector(`.map__filters-container`);
 
 const makeOffer = function (index) {
   shuffleArray(PHOTOS);
@@ -106,7 +116,7 @@ const makeOffer = function (index) {
       "checkin": TIMES[randomRange(0, TIMES.length - 1)],
       "checkout": TIMES[randomRange(0, TIMES.length - 1)],
       "features": features,
-      "description": `Замечательное жилье по координатам (${locationX}, ${locationY}) с ${features}`,
+      "description": `Замечательное жилье по координатам (${locationX}, ${locationY}) с ${features.join(`, `)}`,
       "photos": photos
     },
     "location": {
@@ -158,21 +168,102 @@ const compareOfferByY = function (firstOffer, secondOffer) {
   return 0;
 };
 
-const showPins = function () {
+const makeMockOffers = function () {
   shuffleArray(TITLES);
   shuffleArray(avatars);
 
-  const offers = makeElements(SIZE_OF_MOCK, makeOffer);
+  return makeElements(SIZE_OF_MOCK, makeOffer);
+};
+
+const offers = makeMockOffers();
+
+const showPins = function () {
+  // Показываем карту
+  map.classList.remove(`map--faded`);
 
   // Сортируем объявления, чтобы верхние метки рисовались раньше
   offers.sort(compareOfferByY);
-
-  // Показываем карту
-  map.classList.remove(`map--faded`);
 
   // Создаем метки и помещаем на карту
   const fragmentWithOffers = makeFragmetWithOffers(offers);
   mapPins.appendChild(fragmentWithOffers);
 };
 
+const renderTextPriceWithOfferInfo = function (offerInfo, newMapCard) {
+  const priceEndingElement = document.createElement(`span`);
+  const popupTextPrice = newMapCard.querySelector(`.popup__text--price`);
+
+  popupTextPrice.textContent = `${offerInfo.price}₽`;
+  priceEndingElement.textContent = `/ночь`;
+  popupTextPrice.insertAdjacentElement(`beforeend`, priceEndingElement);
+};
+
+const renderFeaturesWithOfferInfo = function (offerInfo, newMapCard) {
+  const excludedFeatures = FEATURES.filter(function (value) {
+    return !offerInfo.features.includes(value);
+  });
+
+  for (let i = 0; i < excludedFeatures.length; i++) {
+    const className = `.popup__feature--${excludedFeatures[i]}`;
+    const popupFeature = newMapCard.querySelector(className);
+
+    popupFeature.classList.add(`hidden`);
+  }
+};
+
+const renderPhotosWithOfferInfo = function (offerInfo, newMapCard) {
+  const popupPhotos = newMapCard.querySelector(`.popup__photos`);
+
+  if (offerInfo.photos.length > 0) {
+    const popupPhoto = popupPhotos.querySelector(`.popup__photo`);
+    popupPhoto.src = offerInfo.photos[0];
+
+    for (let i = 1; i < offerInfo.photos.length; i++) {
+      const popupPhotoClone = popupPhoto.cloneNode();
+
+      popupPhotoClone.src = offerInfo.photos[i];
+      popupPhotos.appendChild(popupPhotoClone);
+    }
+  } else {
+    popupPhotos.classList.add(`hidden`);
+  }
+};
+
+const makeTextTime = function (offerInfo) {
+  return `Заезд после ${offerInfo.checkin}, выезд до ${offerInfo.checkout}`;
+};
+
+const makeTextCapacity = function (offerInfo) {
+  return `${offerInfo.rooms} комнаты для ${offerInfo.guests} гостей`;
+};
+
+const renderMapCardWithOffer = function (offer) {
+  const newMapCard = mapCard.cloneNode(true);
+  const offerInfo = offer.offer;
+
+  newMapCard.querySelector(`.popup__title`).textContent = offerInfo.title;
+  newMapCard.querySelector(`.popup__text--address`).textContent = offerInfo.address;
+
+  renderTextPriceWithOfferInfo(offerInfo, newMapCard);
+
+  newMapCard.querySelector(`.popup__type`).textContent = VALUES_TYPE[offerInfo.type];
+  newMapCard.querySelector(`.popup__text--capacity`).textContent = makeTextCapacity(offerInfo);
+  newMapCard.querySelector(`.popup__text--time`).textContent = makeTextTime(offerInfo);
+  newMapCard.querySelector(`.popup__description`).textContent = offerInfo.description;
+
+  renderFeaturesWithOfferInfo(offerInfo, newMapCard);
+  renderPhotosWithOfferInfo(offerInfo, newMapCard);
+
+  newMapCard.querySelector(`.popup__avatar`).src = offer.author.avatar;
+
+  return newMapCard;
+};
+
+const showCard = function () {
+  const newMapCard = renderMapCardWithOffer(offers[0]);
+
+  map.insertBefore(newMapCard, filtersContainer);
+};
+
 showPins();
+showCard();
