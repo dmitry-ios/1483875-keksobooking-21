@@ -26,7 +26,7 @@ const TYPES = [
   `bungalow`
 ];
 
-const VALUES_TYPE = {
+const valuesType = {
   'flat': `Квартира`,
   'bungalow': `Бунгало`,
   'house': `Дом`,
@@ -141,7 +141,7 @@ const renderOffer = function (offer) {
   return pinElement;
 };
 
-const makeFragmetWithOffers = function (offers) {
+const makeFragment = function (offers) {
   const fragment = document.createDocumentFragment();
 
   for (let i = 0; i < offers.length; i++) {
@@ -185,11 +185,11 @@ const showPins = function () {
   offers.sort(compareOfferByY);
 
   // Создаем метки и помещаем на карту
-  const fragmentWithOffers = makeFragmetWithOffers(offers);
+  const fragmentWithOffers = makeFragment(offers);
   mapPins.appendChild(fragmentWithOffers);
 };
 
-const renderTextPriceWithOfferInfo = function (offerInfo, newMapCard) {
+const renderTextPrice = function (offerInfo, newMapCard) {
   const priceEndingElement = document.createElement(`span`);
   const popupTextPrice = newMapCard.querySelector(`.popup__text--price`);
 
@@ -198,35 +198,33 @@ const renderTextPriceWithOfferInfo = function (offerInfo, newMapCard) {
   popupTextPrice.insertAdjacentElement(`beforeend`, priceEndingElement);
 };
 
-const renderFeaturesWithOfferInfo = function (offerInfo, newMapCard) {
-  const excludedFeatures = FEATURES.filter(function (value) {
-    return !offerInfo.features.includes(value);
+const renderElements = function (data, container, creator) {
+  const fragment = document.createDocumentFragment();
+
+  container.innerHTML = ``;
+  data.forEach(function (item) {
+    fragment.appendChild(creator(item));
   });
-
-  for (let i = 0; i < excludedFeatures.length; i++) {
-    const className = `.popup__feature--${excludedFeatures[i]}`;
-    const popupFeature = newMapCard.querySelector(className);
-
-    popupFeature.classList.add(`hidden`);
-  }
+  container.appendChild(fragment);
 };
 
-const renderPhotosWithOfferInfo = function (offerInfo, newMapCard) {
-  const popupPhotos = newMapCard.querySelector(`.popup__photos`);
+const renderFeatures = function (features, listContainer) {
+  renderElements(features, listContainer, function (feature) {
+    const listItem = document.createElement(`li`);
 
-  if (offerInfo.photos.length > 0) {
-    const popupPhoto = popupPhotos.querySelector(`.popup__photo`);
-    popupPhoto.src = offerInfo.photos[0];
+    listItem.classList.add(`popup__feature`);
+    listItem.classList.add(`popup__feature--${feature}`);
+    return listItem;
+  });
+};
 
-    for (let i = 1; i < offerInfo.photos.length; i++) {
-      const popupPhotoClone = popupPhoto.cloneNode();
+const renderPhotos = function (photos, photosContainer) {
+  renderElements(photos, photosContainer, function (photo) {
+    const image = cardTemplate.content.querySelector(`.popup__photo`).cloneNode(true);
 
-      popupPhotoClone.src = offerInfo.photos[i];
-      popupPhotos.appendChild(popupPhotoClone);
-    }
-  } else {
-    popupPhotos.classList.add(`hidden`);
-  }
+    image.src = photo;
+    return image;
+  });
 };
 
 const makeTextTime = function (offerInfo) {
@@ -237,33 +235,31 @@ const makeTextCapacity = function (offerInfo) {
   return `${offerInfo.rooms} комнаты для ${offerInfo.guests} гостей`;
 };
 
-const renderMapCardWithOffer = function (offer) {
+const renderMapCard = function (offer) {
   const newMapCard = mapCard.cloneNode(true);
   const offerInfo = offer.offer;
 
   newMapCard.querySelector(`.popup__title`).textContent = offerInfo.title;
   newMapCard.querySelector(`.popup__text--address`).textContent = offerInfo.address;
 
-  renderTextPriceWithOfferInfo(offerInfo, newMapCard);
+  renderTextPrice(offerInfo, newMapCard);
 
-  newMapCard.querySelector(`.popup__type`).textContent = VALUES_TYPE[offerInfo.type];
+  newMapCard.querySelector(`.popup__type`).textContent = valuesType[offerInfo.type];
   newMapCard.querySelector(`.popup__text--capacity`).textContent = makeTextCapacity(offerInfo);
   newMapCard.querySelector(`.popup__text--time`).textContent = makeTextTime(offerInfo);
   newMapCard.querySelector(`.popup__description`).textContent = offerInfo.description;
 
-  renderFeaturesWithOfferInfo(offerInfo, newMapCard);
-  renderPhotosWithOfferInfo(offerInfo, newMapCard);
+  renderFeatures(offerInfo.features, newMapCard.querySelector(`.popup__features`));
+  renderPhotos(offerInfo.photos, newMapCard.querySelector(`.popup__photos`));
 
   newMapCard.querySelector(`.popup__avatar`).src = offer.author.avatar;
 
   return newMapCard;
 };
 
-const showCard = function () {
-  const newMapCard = renderMapCardWithOffer(offers[0]);
-
-  map.insertBefore(newMapCard, filtersContainer);
+const showCard = function (offer) {
+  map.insertBefore(renderMapCard(offer), filtersContainer);
 };
 
 showPins();
-showCard();
+showCard(offers[0]);
