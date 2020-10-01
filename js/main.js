@@ -26,6 +26,13 @@ const TYPES = [
   `bungalow`
 ];
 
+const valuesType = {
+  'flat': `Квартира`,
+  'bungalow': `Бунгало`,
+  'house': `Дом`,
+  'palace': `Дворец`
+};
+
 const TIMES = [
   `12:00`,
   `13:00`,
@@ -82,6 +89,9 @@ const mapPins = document.querySelector(`.map__pins`);
 const mapWidth = mapPins.clientWidth;
 const pinTemplate = document.querySelector(`#pin`);
 const pinItem = pinTemplate.content.querySelector(`.map__pin`);
+const cardTemplate = document.querySelector(`#card`);
+const mapCard = cardTemplate.content.querySelector(`.map__card`);
+const filtersContainer = document.querySelector(`.map__filters-container`);
 
 const makeOffer = function (index) {
   shuffleArray(PHOTOS);
@@ -106,7 +116,7 @@ const makeOffer = function (index) {
       "checkin": TIMES[randomRange(0, TIMES.length - 1)],
       "checkout": TIMES[randomRange(0, TIMES.length - 1)],
       "features": features,
-      "description": `Замечательное жилье по координатам (${locationX}, ${locationY}) с ${features}`,
+      "description": `Замечательное жилье по координатам (${locationX}, ${locationY}) с ${features.join(`, `)}`,
       "photos": photos
     },
     "location": {
@@ -131,7 +141,7 @@ const renderOffer = function (offer) {
   return pinElement;
 };
 
-const makeFragmetWithOffers = function (offers) {
+const makeFragment = function (offers) {
   const fragment = document.createDocumentFragment();
 
   for (let i = 0; i < offers.length; i++) {
@@ -158,21 +168,98 @@ const compareOfferByY = function (firstOffer, secondOffer) {
   return 0;
 };
 
-const showPins = function () {
+const makeMockOffers = function () {
   shuffleArray(TITLES);
   shuffleArray(avatars);
 
-  const offers = makeElements(SIZE_OF_MOCK, makeOffer);
+  return makeElements(SIZE_OF_MOCK, makeOffer);
+};
+
+const offers = makeMockOffers();
+
+const showPins = function () {
+  // Показываем карту
+  map.classList.remove(`map--faded`);
 
   // Сортируем объявления, чтобы верхние метки рисовались раньше
   offers.sort(compareOfferByY);
 
-  // Показываем карту
-  map.classList.remove(`map--faded`);
-
   // Создаем метки и помещаем на карту
-  const fragmentWithOffers = makeFragmetWithOffers(offers);
+  const fragmentWithOffers = makeFragment(offers);
   mapPins.appendChild(fragmentWithOffers);
 };
 
+const renderTextPrice = function (offerInfo, newMapCard) {
+  const priceEndingElement = document.createElement(`span`);
+  const popupTextPrice = newMapCard.querySelector(`.popup__text--price`);
+
+  popupTextPrice.textContent = `${offerInfo.price}₽`;
+  priceEndingElement.textContent = `/ночь`;
+  popupTextPrice.insertAdjacentElement(`beforeend`, priceEndingElement);
+};
+
+const renderElements = function (data, container, creator) {
+  const fragment = document.createDocumentFragment();
+
+  container.innerHTML = ``;
+  data.forEach(function (item) {
+    fragment.appendChild(creator(item));
+  });
+  container.appendChild(fragment);
+};
+
+const renderFeatures = function (features, listContainer) {
+  renderElements(features, listContainer, function (feature) {
+    const listItem = document.createElement(`li`);
+
+    listItem.classList.add(`popup__feature`);
+    listItem.classList.add(`popup__feature--${feature}`);
+    return listItem;
+  });
+};
+
+const renderPhotos = function (photos, photosContainer) {
+  renderElements(photos, photosContainer, function (photo) {
+    const image = cardTemplate.content.querySelector(`.popup__photo`).cloneNode(true);
+
+    image.src = photo;
+    return image;
+  });
+};
+
+const makeTextTime = function (offerInfo) {
+  return `Заезд после ${offerInfo.checkin}, выезд до ${offerInfo.checkout}`;
+};
+
+const makeTextCapacity = function (offerInfo) {
+  return `${offerInfo.rooms} комнаты для ${offerInfo.guests} гостей`;
+};
+
+const renderMapCard = function (offer) {
+  const newMapCard = mapCard.cloneNode(true);
+  const offerInfo = offer.offer;
+
+  newMapCard.querySelector(`.popup__title`).textContent = offerInfo.title;
+  newMapCard.querySelector(`.popup__text--address`).textContent = offerInfo.address;
+
+  renderTextPrice(offerInfo, newMapCard);
+
+  newMapCard.querySelector(`.popup__type`).textContent = valuesType[offerInfo.type];
+  newMapCard.querySelector(`.popup__text--capacity`).textContent = makeTextCapacity(offerInfo);
+  newMapCard.querySelector(`.popup__text--time`).textContent = makeTextTime(offerInfo);
+  newMapCard.querySelector(`.popup__description`).textContent = offerInfo.description;
+
+  renderFeatures(offerInfo.features, newMapCard.querySelector(`.popup__features`));
+  renderPhotos(offerInfo.photos, newMapCard.querySelector(`.popup__photos`));
+
+  newMapCard.querySelector(`.popup__avatar`).src = offer.author.avatar;
+
+  return newMapCard;
+};
+
+const showCard = function (offer) {
+  map.insertBefore(renderMapCard(offer), filtersContainer);
+};
+
 showPins();
+showCard(offers[0]);
