@@ -198,32 +198,24 @@ const renderTextPrice = function (offerInfo, newMapCard) {
   popupTextPrice.insertAdjacentElement(`beforeend`, priceEndingElement);
 };
 
-const renderElements = function (data, container, creator) {
-  const fragment = document.createDocumentFragment();
-
-  container.innerHTML = ``;
-  data.forEach(function (item) {
-    fragment.appendChild(creator(item));
-  });
-  container.appendChild(fragment);
-};
-
 const renderFeatures = function (features, listContainer) {
-  renderElements(features, listContainer, function (feature) {
+  listContainer.innerHTML = ``;
+  features.forEach(function (feature) {
     const listItem = document.createElement(`li`);
 
     listItem.classList.add(`popup__feature`);
     listItem.classList.add(`popup__feature--${feature}`);
-    return listItem;
+    listContainer.appendChild(listItem);
   });
 };
 
 const renderPhotos = function (photos, photosContainer) {
-  renderElements(photos, photosContainer, function (photo) {
+  photosContainer.innerHTML = ``;
+  photos.forEach(function (photo) {
     const image = cardTemplate.content.querySelector(`.popup__photo`).cloneNode(true);
 
     image.src = photo;
-    return image;
+    photosContainer.appendChild(image);
   });
 };
 
