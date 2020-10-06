@@ -197,14 +197,12 @@ const offers = makeMockOffers();
 const showMapPins = function () {
   const fragmentWithOffers = makeFragment(offers);
 
-  map.classList.remove(`map--faded`);
   mapPins.appendChild(fragmentWithOffers);
 };
 
 const hideMapPins = function () {
   const pins = mapPins.querySelectorAll(`.map__pin:not(.map__pin--main)`);
 
-  map.classList.add(`map--faded`);
   pins.forEach(function (pin) {
     pin.remove();
   });
@@ -288,19 +286,31 @@ const formCapacity = form.querySelector(`select[name=capacity]`);
 const formRooms = form.querySelector(`select[name=rooms]`);
 const formTitle = form.querySelector(`input[name=title]`);
 
-mapMainPin.addEventListener(`mousedown`, function (evt) {
-  if (evt.button === LEFT_MOUSE_BUTTON) {
-    activatePage();
-    setInputAddress();
-  }
-});
+const clearMainEvents = function () {
+  mapMainPin.removeEventListener(`mousedown`, onMainActiveClick);
+  mapMainPin.removeEventListener(`keydown`, onMainEnterPress);
+};
 
-mapMainPin.addEventListener(`keydown`, function (evt) {
-  if (evt.key === ENTER_KEYBOARD) {
-    activatePage();
-    setInputAddress();
+const setupActivePage = function () {
+  activatePage();
+  setInputAddress();
+  clearMainEvents();
+};
+
+const onMainActiveClick = function (evt) {
+  if (evt.button === LEFT_MOUSE_BUTTON) {
+    setupActivePage();
   }
-});
+};
+
+const onMainEnterPress = function (evt) {
+  if (evt.key === ENTER_KEYBOARD) {
+    setupActivePage();
+  }
+};
+
+mapMainPin.addEventListener(`mousedown`, onMainActiveClick);
+mapMainPin.addEventListener(`keydown`, onMainEnterPress);
 
 const disableElement = function (element) {
   element.disabled = true;
@@ -327,22 +337,18 @@ const enableInputs = function () {
 };
 
 const deactivatePage = function () {
-  if (!isActivePage) {
-    return;
-  }
-
   isActivePage = false;
+
+  map.classList.add(`map--faded`);
 
   hideMapPins();
   disableInputs();
 };
 
 const activatePage = function () {
-  if (isActivePage) {
-    return;
-  }
-
   isActivePage = true;
+
+  map.classList.remove(`map--faded`);
 
   showMapPins();
   enableInputs();
@@ -396,8 +402,16 @@ formTitle.addEventListener(`invalid`, function () {
   }
 });
 
-formCapacity.addEventListener(`change`, checkRoomValidity);
-formRooms.addEventListener(`change`, checkRoomValidity);
+const onSelectRoomChange = function () {
+  checkRoomValidity();
+};
+
+const onSelectCapacityChange = function () {
+  checkRoomValidity();
+};
+
+formCapacity.addEventListener(`change`, onSelectCapacityChange);
+formRooms.addEventListener(`change`, onSelectRoomChange);
 
 form.addEventListener(`submit`, function (evt) {
   if (!checkRoomValidity()) {
