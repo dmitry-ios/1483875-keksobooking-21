@@ -12,6 +12,7 @@ const LONG_TITLE_MESSAGE = `Максимальная длина — 100 симв
 const MISSING_TITLE_MESSAGE = `Обязательное текстовое поле`;
 const LEFT_MOUSE_BUTTON = 0;
 const ENTER_KEYBOARD = `Enter`;
+const ESCAPE_KEYBOARD = `Escape`;
 
 const TITLES = [
   `Милая, уютная квартира в центре Токио`,
@@ -36,6 +37,13 @@ const valuesType = {
   'bungalow': `Бунгало`,
   'house': `Дом`,
   'palace': `Дворец`
+};
+
+const minPrice = {
+  'flat': 1000,
+  'bungalow': 0,
+  'house': 5000,
+  'palace': 10000
 };
 
 const TIMES = [
@@ -152,6 +160,10 @@ const renderOffer = function (offer) {
   imgElement.src = offer.author.avatar;
   imgElement.alt = offer.offer.title;
 
+  pinElement.addEventListener(`click`, function () {
+    showCard(offer);
+  });
+
   return pinElement;
 };
 
@@ -193,6 +205,8 @@ const makeMockOffers = function () {
 };
 
 const offers = makeMockOffers();
+
+let popup = null;
 
 const showMapPins = function () {
   const fragmentWithOffers = makeFragment(offers);
@@ -265,14 +279,35 @@ const renderMapCard = function (offer) {
 
   newMapCard.querySelector(`.popup__avatar`).src = offer.author.avatar;
 
+  newMapCard.querySelector(`.popup__close`).addEventListener(`click`, function () {
+    hideCard();
+  });
+
   return newMapCard;
 };
 
-/* eslint-disable */
-const showCard = function (offer) {
-  map.insertBefore(renderMapCard(offer), filtersContainer);
+const hideCard = function () {
+  document.removeEventListener(`keydown`, onEscapeCardPress);
+  popup.remove();
+  popup = null;
 };
-/* eslint-enable */
+
+const onEscapeCardPress = function (evt) {
+  if (evt.key === ESCAPE_KEYBOARD) {
+    hideCard();
+  }
+};
+
+const showCard = function (offer) {
+  if (popup !== null) {
+    return;
+  }
+  popup = renderMapCard(offer);
+
+  document.addEventListener(`keydown`, onEscapeCardPress);
+
+  map.insertBefore(popup, filtersContainer);
+};
 
 const mapMainPin = document.querySelector(`.map__pin--main`);
 const form = document.querySelector(`.ad-form`);
@@ -285,6 +320,10 @@ const formAddress = form.querySelector(`input[name=address]`);
 const formCapacity = form.querySelector(`select[name=capacity]`);
 const formRooms = form.querySelector(`select[name=rooms]`);
 const formTitle = form.querySelector(`input[name=title]`);
+const formType = form.querySelector(`select[name=type]`);
+const formPrice = form.querySelector(`input[name=price]`);
+const formTimeIn = form.querySelector(`select[name=timein]`);
+const formTimeOut = form.querySelector(`select[name=timeout]`);
 
 const clearMainEvents = function () {
   mapMainPin.removeEventListener(`mousedown`, onMainActiveClick);
@@ -418,3 +457,46 @@ form.addEventListener(`submit`, function (evt) {
     evt.preventDefault();
   }
 });
+
+const setPricePlaceholder = function () {
+  const currentMinPrice = minPrice[formType.value];
+  formPrice.placeholder = currentMinPrice;
+};
+
+const checkPriceValidity = function () {
+  const currentType = formType.value;
+  const userPrice = formPrice.value;
+  const currentMinPrice = minPrice[currentType];
+
+  if (userPrice < currentMinPrice) {
+    formPrice.setCustomValidity(`«${valuesType[currentType]}» — минимальная цена за ночь ${currentMinPrice}`);
+  } else {
+    formPrice.setCustomValidity(``);
+  }
+  formPrice.reportValidity();
+};
+
+const onSelectTypeChange = function () {
+  setPricePlaceholder();
+  checkPriceValidity();
+};
+
+const onSelectPriceInput = function () {
+  checkPriceValidity();
+};
+
+formType.addEventListener(`change`, onSelectTypeChange);
+formPrice.addEventListener(`input`, onSelectPriceInput);
+
+setPricePlaceholder();
+
+const onSelectTimeinChange = function (evt) {
+  formTimeOut.value = evt.target.value;
+};
+
+const onSelectTimeoutChange = function (evt) {
+  formTimeIn.value = evt.target.value;
+};
+
+formTimeIn.addEventListener(`change`, onSelectTimeinChange);
+formTimeOut.addEventListener(`change`, onSelectTimeoutChange);
