@@ -206,8 +206,6 @@ const makeMockOffers = function () {
 
 const offers = makeMockOffers();
 
-let popup = null;
-
 const showMapPins = function () {
   const fragmentWithOffers = makeFragment(offers);
 
@@ -286,10 +284,18 @@ const renderMapCard = function (offer) {
   return newMapCard;
 };
 
+const getCurrentCard = function () {
+  return map.querySelector(`.map__card`);
+};
+
 const hideCard = function () {
-  document.removeEventListener(`keydown`, onEscapeCardPress);
-  popup.remove();
-  popup = null;
+  let currentCard = getCurrentCard();
+
+  if (currentCard) {
+    document.removeEventListener(`keydown`, onEscapeCardPress);
+    currentCard.remove();
+    currentCard = null;
+  }
 };
 
 const onEscapeCardPress = function (evt) {
@@ -299,14 +305,11 @@ const onEscapeCardPress = function (evt) {
 };
 
 const showCard = function (offer) {
-  if (popup !== null) {
-    return;
-  }
-  popup = renderMapCard(offer);
+  hideCard();
 
   document.addEventListener(`keydown`, onEscapeCardPress);
 
-  map.insertBefore(popup, filtersContainer);
+  map.insertBefore(renderMapCard(offer), filtersContainer);
 };
 
 const mapMainPin = document.querySelector(`.map__pin--main`);
