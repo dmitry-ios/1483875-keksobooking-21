@@ -284,12 +284,8 @@ const renderMapCard = function (offer) {
   return newMapCard;
 };
 
-const getCurrentCard = function () {
-  return map.querySelector(`.map__card`);
-};
-
 const hideCard = function () {
-  let currentCard = getCurrentCard();
+  let currentCard = map.querySelector(`.map__card`);
 
   if (currentCard) {
     document.removeEventListener(`keydown`, onEscapeCardPress);
