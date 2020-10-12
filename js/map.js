@@ -8,8 +8,6 @@
   const pinTemplate = document.querySelector(`#pin`);
   const pinItem = pinTemplate.content.querySelector(`.map__pin`);
 
-  const offers = window.mock.makeMockOffers();
-
   const renderOffer = function (offer) {
     const pinElement = pinItem.cloneNode(true);
     const imgElement = pinElement.querySelector(`img`);
@@ -37,10 +35,30 @@
     return fragment;
   };
 
-  const showMapPins = function () {
-    const fragmentWithOffers = makeFragment(offers);
+  const errorHandler = function (errorMessage) {
+    const node = document.createElement(`div`);
+
+    node.style = `z-index: 100; margin: 0 auto; text-align: center; background-color: red;`;
+    node.style.position = `absolute`;
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = `30px`;
+
+    node.textContent = errorMessage;
+
+    window.scrollTo(0, 0);
+
+    document.body.insertAdjacentElement(`afterbegin`, node);
+  };
+
+  const successLoadHandler = function (jsonData) {
+    const fragmentWithOffers = makeFragment(jsonData);
 
     mapPins.appendChild(fragmentWithOffers);
+  };
+
+  const showMapPins = function () {
+    window.backend.load(successLoadHandler, errorHandler);
   };
 
   const hideMapPins = function () {
