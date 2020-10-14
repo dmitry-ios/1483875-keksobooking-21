@@ -2,6 +2,7 @@
 
 (function () {
   const SIZE_OF_MOCK = 8;
+  const MAP_WIDTH = 1200;
   const MAX_LOCATION_Y = 630;
   const MIN_LOCATION_Y = 130;
   const MAX_PRICE = 10500;
@@ -17,6 +18,7 @@
 
   window.constants = {
     SIZE_OF_MOCK,
+    MAP_WIDTH,
     MAX_LOCATION_Y,
     MIN_LOCATION_Y,
     MAX_PRICE,

@@ -35,22 +35,6 @@
     return fragment;
   };
 
-  const errorHandler = function (errorMessage) {
-    const node = document.createElement(`div`);
-
-    node.style = `z-index: 100; margin: 0 auto; text-align: center; background-color: red;`;
-    node.style.position = `absolute`;
-    node.style.left = 0;
-    node.style.right = 0;
-    node.style.fontSize = `30px`;
-
-    node.textContent = errorMessage;
-
-    window.scrollTo(0, 0);
-
-    document.body.insertAdjacentElement(`afterbegin`, node);
-  };
-
   const successLoadHandler = function (jsonData) {
     const fragmentWithOffers = makeFragment(jsonData);
 
@@ -58,7 +42,7 @@
   };
 
   const showMapPins = function () {
-    window.backend.load(successLoadHandler, errorHandler);
+    window.backend.load(successLoadHandler, window.util.errorHandler);
   };
 
   const hideMapPins = function () {
