@@ -95,6 +95,7 @@
   };
 
   window.card = {
-    showCard
+    showCard,
+    hideCard
   };
 })();
