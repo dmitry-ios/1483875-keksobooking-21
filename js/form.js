@@ -93,11 +93,6 @@
     formAddress.value = `${x}, ${y}`;
   };
 
-  window.move.startMove(mapMainPin, function () {
-    window.card.hideCard();
-    setInputAddress();
-  });
-
   window.form = {
     formNode: form,
     deactivatePage,
