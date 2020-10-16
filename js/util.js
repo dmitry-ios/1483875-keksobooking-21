@@ -63,6 +63,22 @@
     return y;
   };
 
+  const DEBOUNCE_INTERVAL = 500;
+
+  const debounce = function (cb) {
+    let lastTimeout = null;
+
+    return function (...args) {
+      let parameters = args;
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(function () {
+        cb(...parameters);
+      }, DEBOUNCE_INTERVAL);
+    };
+  };
+
   window.util = {
     randomRange,
     shuffleArray,
@@ -70,6 +86,7 @@
     generateAvatarUrl,
     errorHandler,
     limitMapX,
-    limitMapY
+    limitMapY,
+    debounce
   };
 })();

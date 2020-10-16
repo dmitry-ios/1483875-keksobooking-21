@@ -44,20 +44,26 @@
     element.disabled = false;
   };
 
+  const disableFilters = function () {
+    mapFilters.forEach(disableElement);
+    mapFeatures.forEach(disableElement);
+  };
+
+  const enableFilters = function () {
+    mapFilters.forEach(enableElement);
+    mapFeatures.forEach(enableElement);
+  };
+
   const disableInputs = function () {
     form.classList.add(`ad-form--disabled`);
     disableElement(formHeader);
     formElements.forEach(disableElement);
-    mapFilters.forEach(disableElement);
-    mapFeatures.forEach(disableElement);
   };
 
   const enableInputs = function () {
     form.classList.remove(`ad-form--disabled`);
     enableElement(formHeader);
     formElements.forEach(enableElement);
-    mapFilters.forEach(enableElement);
-    mapFeatures.forEach(enableElement);
   };
 
   const deactivatePage = function () {
@@ -67,6 +73,7 @@
 
     window.map.hideMapPins();
     disableInputs();
+    disableFilters();
   };
 
   const activatePage = function () {
@@ -96,6 +103,7 @@
   window.form = {
     formNode: form,
     deactivatePage,
+    enableFilters,
     setInputAddress
   };
 })();

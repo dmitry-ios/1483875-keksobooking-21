@@ -19,6 +19,8 @@
     `bungalow`
   ];
 
+  const ANY_TYPE = `any`;
+
   const valuesType = {
     'flat': `Квартира`,
     'bungalow': `Бунгало`,
@@ -64,6 +66,7 @@
   window.data = {
     TITLES,
     TYPES,
+    ANY_TYPE,
     valuesType,
     minPrice,
     TIMES,
