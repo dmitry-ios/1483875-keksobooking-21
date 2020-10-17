@@ -4,10 +4,10 @@
   let isActivePage = true;
 
   let offers = [];
-  let housingType = window.data.ANY_TYPE;
 
   const map = document.querySelector(`.map`);
   const mapPins = document.querySelector(`.map__pins`);
+  const mapFiltersForm = document.querySelector(`.map__filters`);
 
   const successLoadHandler = function (jsonData) {
     offers = jsonData;
@@ -35,17 +35,12 @@
     hideMapPins();
     window.card.hideCard();
 
-    const filteredOffers = offers.filter((offerInfo) => {
-      return housingType === window.data.ANY_TYPE || offerInfo.offer.type === housingType;
-    });
+    const filteredOffers = window.filter.getFilteredOffers(offers);
 
     window.render.setupSimilarPins(filteredOffers);
   };
 
-  window.filter.setTypeChangeHandler(window.util.debounce(function (type) {
-    housingType = type;
-    updatePins();
-  }));
+  mapFiltersForm.addEventListener(`change`, window.util.debounce(updatePins));
 
   window.map = {
     isActivePage,
