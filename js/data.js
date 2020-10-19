@@ -19,6 +19,8 @@
     `bungalow`
   ];
 
+  const ANY_TYPE = `any`;
+
   const valuesType = {
     'flat': `Квартира`,
     'bungalow': `Бунгало`,
@@ -61,14 +63,18 @@
     100: `100 комнат — «не для гостей»`
   };
 
+  let offers = [];
+
   window.data = {
     TITLES,
     TYPES,
+    ANY_TYPE,
     valuesType,
     minPrice,
     TIMES,
     FEATURES,
     PHOTOS,
-    roomValidityMessage
+    roomValidityMessage,
+    offers
   };
 })();

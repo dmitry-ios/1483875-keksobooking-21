@@ -1,4 +1,6 @@
 'use strict';
 
-window.form.deactivatePage();
-window.form.setInputAddress();
+(function () {
+  window.map.deactivatePage();
+  window.form.setInputAddress();
+})();

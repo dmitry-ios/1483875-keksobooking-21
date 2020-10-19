@@ -1,62 +1,55 @@
 'use strict';
 
 (function () {
-  let isActivePage = true;
-
   const map = document.querySelector(`.map`);
-  const mapPins = document.querySelector(`.map__pins`);
-  const pinTemplate = document.querySelector(`#pin`);
-  const pinItem = pinTemplate.content.querySelector(`.map__pin`);
+  const mapMainPin = document.querySelector(`.map__pin--main`);
 
-  const renderOffer = function (offer) {
-    const pinElement = pinItem.cloneNode(true);
-    const imgElement = pinElement.querySelector(`img`);
-
-    pinElement.style = `left: ${offer.location.x + window.constants.PIN_OFFSET_X}px; top: ${offer.location.y + window.constants.PIN_OFFSET_Y}px;`;
-    imgElement.src = offer.author.avatar;
-    imgElement.alt = offer.offer.title;
-
-    pinElement.addEventListener(`click`, function () {
-      window.card.showCard(offer);
-    });
-
-    return pinElement;
+  const clearMainEvents = function () {
+    mapMainPin.removeEventListener(`mousedown`, onMainActiveClick);
+    mapMainPin.removeEventListener(`keydown`, onMainEnterPress);
   };
 
-  const makeFragment = function (elements) {
-    const fragment = document.createDocumentFragment();
+  const setupActivePage = function () {
+    activatePage();
+    window.form.setInputAddress();
+    clearMainEvents();
+  };
 
-    for (let i = 0; i < elements.length; i++) {
-      const offerElement = renderOffer(elements[i]);
-
-      fragment.appendChild(offerElement);
+  const onMainActiveClick = function (evt) {
+    if (evt.button === window.constants.LEFT_MOUSE_BUTTON) {
+      setupActivePage();
     }
-
-    return fragment;
   };
 
-  const successLoadHandler = function (jsonData) {
-    const fragmentWithOffers = makeFragment(jsonData);
-
-    mapPins.appendChild(fragmentWithOffers);
+  const onMainEnterPress = function (evt) {
+    if (evt.key === window.constants.ENTER_KEYBOARD) {
+      setupActivePage();
+    }
   };
 
-  const showMapPins = function () {
-    window.backend.load(successLoadHandler, window.util.errorHandler);
+  const deactivatePage = function () {
+    window.form.isActivePage = false;
+
+    map.classList.add(`map--faded`);
+
+    window.pin.hideMapPins();
+    window.form.disableInputs();
+    window.form.disableFilters();
   };
 
-  const hideMapPins = function () {
-    const pins = mapPins.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+  const activatePage = function () {
+    window.form.isActivePage = true;
 
-    pins.forEach(function (pin) {
-      pin.remove();
-    });
+    map.classList.remove(`map--faded`);
+
+    window.pin.showMapPins();
+    window.form.enableInputs();
   };
+
+  mapMainPin.addEventListener(`mousedown`, onMainActiveClick);
+  mapMainPin.addEventListener(`keydown`, onMainEnterPress);
 
   window.map = {
-    isActivePage,
-    mapNode: map,
-    showMapPins,
-    hideMapPins
+    deactivatePage
   };
 })();
