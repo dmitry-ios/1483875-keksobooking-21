@@ -1,51 +1,55 @@
 'use strict';
 
 (function () {
-  let isActivePage = true;
-
-  let offers = [];
-
   const map = document.querySelector(`.map`);
-  const mapPins = document.querySelector(`.map__pins`);
-  const mapFiltersForm = document.querySelector(`.map__filters`);
+  const mapMainPin = document.querySelector(`.map__pin--main`);
 
-  const successLoadHandler = function (jsonData) {
-    offers = jsonData;
+  const clearMainEvents = function () {
+    mapMainPin.removeEventListener(`mousedown`, onMainActiveClick);
+    mapMainPin.removeEventListener(`keydown`, onMainEnterPress);
+  };
 
-    if (offers.length > 0) {
-      window.form.enableFilters();
+  const setupActivePage = function () {
+    activatePage();
+    window.form.setInputAddress();
+    clearMainEvents();
+  };
+
+  const onMainActiveClick = function (evt) {
+    if (evt.button === window.constants.LEFT_MOUSE_BUTTON) {
+      setupActivePage();
     }
-
-    updatePins();
   };
 
-  const showMapPins = function () {
-    window.backend.load(successLoadHandler, window.util.errorHandler);
+  const onMainEnterPress = function (evt) {
+    if (evt.key === window.constants.ENTER_KEYBOARD) {
+      setupActivePage();
+    }
   };
 
-  const hideMapPins = function () {
-    const pins = mapPins.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+  const deactivatePage = function () {
+    window.form.isActivePage = false;
 
-    pins.forEach(function (pin) {
-      pin.remove();
-    });
+    map.classList.add(`map--faded`);
+
+    window.pin.hideMapPins();
+    window.form.disableInputs();
+    window.form.disableFilters();
   };
 
-  const updatePins = function () {
-    hideMapPins();
-    window.card.hideCard();
+  const activatePage = function () {
+    window.form.isActivePage = true;
 
-    const filteredOffers = window.filter.getFilteredOffers(offers);
+    map.classList.remove(`map--faded`);
 
-    window.render.setupSimilarPins(filteredOffers);
+    window.pin.showMapPins();
+    window.form.enableInputs();
   };
 
-  mapFiltersForm.addEventListener(`change`, window.util.debounce(updatePins));
+  mapMainPin.addEventListener(`mousedown`, onMainActiveClick);
+  mapMainPin.addEventListener(`keydown`, onMainEnterPress);
 
   window.map = {
-    isActivePage,
-    mapNode: map,
-    showMapPins,
-    hideMapPins
+    deactivatePage
   };
 })();

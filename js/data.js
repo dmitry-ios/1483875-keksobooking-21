@@ -63,6 +63,8 @@
     100: `100 комнат — «не для гостей»`
   };
 
+  let offers = [];
+
   window.data = {
     TITLES,
     TYPES,
@@ -72,6 +74,7 @@
     TIMES,
     FEATURES,
     PHOTOS,
-    roomValidityMessage
+    roomValidityMessage,
+    offers
   };
 })();

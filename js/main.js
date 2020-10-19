@@ -1,6 +1,6 @@
 'use strict';
 
 (function () {
-  window.form.deactivatePage();
+  window.map.deactivatePage();
   window.form.setInputAddress();
 })();

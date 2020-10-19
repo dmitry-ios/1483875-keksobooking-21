@@ -10,31 +10,7 @@
   const mapFeatures = mapFiltersForm.querySelectorAll(`.map__features`);
   const formAddress = form.querySelector(`input[name=address]`);
 
-  const clearMainEvents = function () {
-    mapMainPin.removeEventListener(`mousedown`, onMainActiveClick);
-    mapMainPin.removeEventListener(`keydown`, onMainEnterPress);
-  };
-
-  const setupActivePage = function () {
-    activatePage();
-    setInputAddress();
-    clearMainEvents();
-  };
-
-  const onMainActiveClick = function (evt) {
-    if (evt.button === window.constants.LEFT_MOUSE_BUTTON) {
-      setupActivePage();
-    }
-  };
-
-  const onMainEnterPress = function (evt) {
-    if (evt.key === window.constants.ENTER_KEYBOARD) {
-      setupActivePage();
-    }
-  };
-
-  mapMainPin.addEventListener(`mousedown`, onMainActiveClick);
-  mapMainPin.addEventListener(`keydown`, onMainEnterPress);
+  let isActivePage = true;
 
   const disableElement = function (element) {
     element.disabled = true;
@@ -66,30 +42,11 @@
     formElements.forEach(enableElement);
   };
 
-  const deactivatePage = function () {
-    window.map.isActivePage = false;
-
-    window.map.mapNode.classList.add(`map--faded`);
-
-    window.map.hideMapPins();
-    disableInputs();
-    disableFilters();
-  };
-
-  const activatePage = function () {
-    window.map.isActivePage = true;
-
-    window.map.mapNode.classList.remove(`map--faded`);
-
-    window.map.showMapPins();
-    enableInputs();
-  };
-
   const setInputAddress = function () {
     let x = mapMainPin.offsetLeft;
     let y = mapMainPin.offsetTop;
 
-    if (window.map.isActivePage) {
+    if (isActivePage) {
       x -= window.constants.PIN_OFFSET_X;
       y -= window.constants.PIN_OFFSET_Y;
     } else {
@@ -102,8 +59,11 @@
 
   window.form = {
     formNode: form,
-    deactivatePage,
     enableFilters,
-    setInputAddress
+    disableFilters,
+    disableInputs,
+    enableInputs,
+    setInputAddress,
+    isActivePage
   };
 })();
