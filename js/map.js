@@ -32,6 +32,9 @@
 
     map.classList.add(`map--faded`);
 
+    mapMainPin.addEventListener(`mousedown`, onMainActiveClick);
+    mapMainPin.addEventListener(`keydown`, onMainEnterPress);
+
     window.pin.hideMapPins();
     window.form.disableInputs();
     window.form.disableFilters();
@@ -45,9 +48,6 @@
     window.pin.showMapPins();
     window.form.enableInputs();
   };
-
-  mapMainPin.addEventListener(`mousedown`, onMainActiveClick);
-  mapMainPin.addEventListener(`keydown`, onMainEnterPress);
 
   window.map = {
     deactivatePage

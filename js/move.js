@@ -2,6 +2,13 @@
 
 (function () {
   const mapMainPin = document.querySelector(`.map__pin--main`);
+  const originTopPin = mapMainPin.style.top;
+  const originLeftPin = mapMainPin.style.left;
+
+  const resetPositionPin = function () {
+    mapMainPin.style.top = originTopPin;
+    mapMainPin.style.left = originLeftPin;
+  };
 
   const updatePageState = function () {
     window.card.hideCard();
@@ -50,4 +57,8 @@
   };
 
   mapMainPin.addEventListener(`mousedown`, onMouseDown);
+
+  window.move = {
+    resetPositionPin
+  };
 })();

@@ -6,6 +6,11 @@
   const pinTemplate = document.querySelector(`#pin`);
   const pinItem = pinTemplate.content.querySelector(`.map__pin`);
   const mapPins = document.querySelector(`.map__pins`);
+  const errorTemplate = document.querySelector(`#error`).content;
+  const errorMessage = errorTemplate.querySelector(`.error`);
+  const successTemplate = document.querySelector(`#success`).content;
+  const successMessage = successTemplate.querySelector(`.success`);
+  const mainNode = document.querySelector(`main`);
 
   const renderOffer = function (offer) {
     const pinElement = pinItem.cloneNode(true);
@@ -41,7 +46,54 @@
     mapPins.appendChild(fragmentWithOffers);
   };
 
+  const setupMessage = function (rootNode, textNode, text, closeButton) {
+    const closeMessage = function () {
+      rootNode.remove();
+      window.removeEventListener(`keydown`, onMessageEscapePress);
+    };
+
+    const onMessageEscapePress = function (evt) {
+      if (evt.key !== window.constants.ESCAPE_KEYBOARD) {
+        return;
+      }
+      closeMessage();
+    };
+
+    rootNode.addEventListener(`click`, function () {
+      closeMessage();
+    });
+
+    if (textNode && text) {
+      textNode.textContent = text;
+    }
+
+    if (closeButton) {
+      closeButton.addEventListener(`click`, function () {
+        closeMessage();
+      });
+    }
+
+    window.addEventListener(`keydown`, onMessageEscapePress);
+    mainNode.insertAdjacentElement(`afterbegin`, rootNode);
+  };
+
+  const showErrorMessage = function (text) {
+    const errorNode = errorMessage.cloneNode(true);
+    const message = errorNode.querySelector(`.error__message`);
+    const closeButton = errorNode.querySelector(`.error__button`);
+
+    setupMessage(errorNode, message, text, closeButton);
+  };
+
+  const showSuccessMessage = function () {
+    const successNode = successMessage.cloneNode(true);
+
+    setupMessage(successNode);
+  };
+
   window.render = {
-    setupSimilarPins
+    setupSimilarPins,
+    showErrorMessage,
+    showSuccessMessage
   };
 })();
