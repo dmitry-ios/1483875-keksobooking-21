@@ -1,6 +1,7 @@
 'use strict';
 
 const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
+const DEFAULT_AVATAR_SOURCE = `img/muffin-grey.svg`;
 
 const avatarFileChooser = document.querySelector(`.ad-form__field input[type=file]`);
 const avatarPreview = document.querySelector(`.ad-form-header__preview`);
@@ -53,5 +54,15 @@ const setupFileChooser = function (fileChooser, preview, info) {
   });
 };
 
+const resetPreviews = function () {
+  photoPreview.innerHTML = ``;
+  avatarPreview.innerHTML = ``;
+  createImagePreview(DEFAULT_AVATAR_SOURCE, avatarInfo, avatarPreview);
+};
+
 setupFileChooser(avatarFileChooser, avatarPreview, avatarInfo);
 setupFileChooser(photoFileChooser, photoPreview, photoInfo);
+
+window.preview = {
+  resetPreviews
+};
