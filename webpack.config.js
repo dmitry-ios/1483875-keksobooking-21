@@ -16,6 +16,7 @@ module.exports = {
     `./js/move.js`,
     `./js/send.js`,
     `./js/validation.js`,
+    `./js/preview.js`,
     `./js/main.js`
   ],
   output: {
