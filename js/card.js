@@ -1,6 +1,7 @@
 'use strict';
 
 const map = document.querySelector(`.map`);
+const mapPins = document.querySelector(`.map__pins`);
 const cardTemplate = document.querySelector(`#card`);
 const mapCard = cardTemplate.content.querySelector(`.map__card`);
 const filtersContainer = document.querySelector(`.map__filters-container`);
@@ -69,6 +70,14 @@ const renderMapCard = function (offer) {
   return newMapCard;
 };
 
+const discardActivePin = function () {
+  const activePin = mapPins.querySelector(`.map__pin--active`);
+
+  if (activePin) {
+    activePin.classList.remove(`map__pin--active`);
+  }
+};
+
 const hideCard = function () {
   let currentCard = map.querySelector(`.map__card`);
 
@@ -77,6 +86,8 @@ const hideCard = function () {
     currentCard.remove();
     currentCard = null;
   }
+
+  discardActivePin();
 };
 
 const onEscapeCardPress = function (evt) {
