@@ -1,11 +1,17 @@
 'use strict';
 
-const onFormSuccessLoad = function () {
+const resetPage = function () {
   window.form.formNode.reset();
+  window.form.filterForm.reset();
   window.card.hideCard();
   window.map.deactivatePage();
   window.move.resetPositionPin();
   window.form.setInputAddress();
+  window.preview.resetPreviews();
+};
+
+const onFormSuccessLoad = function () {
+  resetPage();
   window.render.showSuccessMessage();
 };
 
@@ -26,6 +32,5 @@ const resetButton = window.form.formNode.querySelector(`.ad-form__reset`);
 resetButton.addEventListener(`click`, function (evt) {
   evt.preventDefault();
 
-  window.form.formNode.reset();
-  window.form.setInputAddress();
+  resetPage();
 });

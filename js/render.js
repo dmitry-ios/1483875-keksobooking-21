@@ -21,6 +21,7 @@ const renderOffer = function (offer) {
 
   pinElement.addEventListener(`click`, function () {
     window.card.showCard(offer);
+    pinElement.classList.add(`map__pin--active`);
   });
 
   return pinElement;

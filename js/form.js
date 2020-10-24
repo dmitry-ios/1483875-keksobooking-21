@@ -57,6 +57,7 @@ const setInputAddress = function () {
 };
 
 window.form = {
+  filterForm: mapFiltersForm,
   formNode: form,
   enableFilters,
   disableFilters,

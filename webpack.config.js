@@ -14,6 +14,7 @@ module.exports = {
     `./js/pin.js`,
     `./js/map.js`,
     `./js/move.js`,
+    `./js/preview.js`,
     `./js/send.js`,
     `./js/validation.js`,
     `./js/main.js`
