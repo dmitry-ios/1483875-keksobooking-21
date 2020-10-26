@@ -3,7 +3,7 @@
 const mapPins = document.querySelector(`.map__pins`);
 const mapFiltersForm = document.querySelector(`.map__filters`);
 
-const successLoadHandler = function (jsonData) {
+const successLoadHandler = (jsonData) => {
   window.data.offers = jsonData;
 
   if (jsonData.length > 0) {
@@ -13,19 +13,19 @@ const successLoadHandler = function (jsonData) {
   updatePins();
 };
 
-const showMapPins = function () {
+const showMapPins = () => {
   window.backend.load(successLoadHandler, window.util.errorHandler);
 };
 
-const hideMapPins = function () {
+const hideMapPins = () => {
   const pins = mapPins.querySelectorAll(`.map__pin:not(.map__pin--main)`);
 
-  pins.forEach(function (pin) {
+  pins.forEach((pin) => {
     pin.remove();
   });
 };
 
-const updatePins = function () {
+const updatePins = () => {
   hideMapPins();
   window.card.hideCard();
 

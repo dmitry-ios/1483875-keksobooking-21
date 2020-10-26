@@ -3,30 +3,30 @@
 const map = document.querySelector(`.map`);
 const mapMainPin = document.querySelector(`.map__pin--main`);
 
-const clearMainEvents = function () {
+const clearMainEvents = () => {
   mapMainPin.removeEventListener(`mousedown`, onMainActiveClick);
   mapMainPin.removeEventListener(`keydown`, onMainEnterPress);
 };
 
-const setupActivePage = function () {
+const setupActivePage = () => {
   activatePage();
   window.form.setInputAddress();
   clearMainEvents();
 };
 
-const onMainActiveClick = function (evt) {
+const onMainActiveClick = (evt) => {
   if (evt.button === window.constants.LEFT_MOUSE_BUTTON) {
     setupActivePage();
   }
 };
 
-const onMainEnterPress = function (evt) {
+const onMainEnterPress = (evt) => {
   if (evt.key === window.constants.ENTER_KEYBOARD) {
     setupActivePage();
   }
 };
 
-const deactivatePage = function () {
+const deactivatePage = () => {
   window.form.isActivePage = false;
 
   map.classList.add(`map--faded`);
@@ -39,7 +39,7 @@ const deactivatePage = function () {
   window.form.disableFilters();
 };
 
-const activatePage = function () {
+const activatePage = () => {
   window.form.isActivePage = true;
 
   map.classList.remove(`map--faded`);

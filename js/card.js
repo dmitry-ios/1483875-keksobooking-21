@@ -6,7 +6,7 @@ const cardTemplate = document.querySelector(`#card`);
 const mapCard = cardTemplate.content.querySelector(`.map__card`);
 const filtersContainer = document.querySelector(`.map__filters-container`);
 
-const renderTextPrice = function (offerInfo, newMapCard) {
+const renderTextPrice = (offerInfo, newMapCard) => {
   const priceEndingElement = document.createElement(`span`);
   const popupTextPrice = newMapCard.querySelector(`.popup__text--price`);
 
@@ -15,9 +15,9 @@ const renderTextPrice = function (offerInfo, newMapCard) {
   popupTextPrice.insertAdjacentElement(`beforeend`, priceEndingElement);
 };
 
-const renderFeatures = function (features, listContainer) {
+const renderFeatures = (features, listContainer) => {
   listContainer.innerHTML = ``;
-  features.forEach(function (feature) {
+  features.forEach((feature) => {
     const listItem = document.createElement(`li`);
 
     listItem.classList.add(`popup__feature`);
@@ -26,9 +26,9 @@ const renderFeatures = function (features, listContainer) {
   });
 };
 
-const renderPhotos = function (photos, photosContainer) {
+const renderPhotos = (photos, photosContainer) => {
   photosContainer.innerHTML = ``;
-  photos.forEach(function (photo) {
+  photos.forEach((photo) => {
     const image = cardTemplate.content.querySelector(`.popup__photo`).cloneNode(true);
 
     image.src = photo;
@@ -36,15 +36,15 @@ const renderPhotos = function (photos, photosContainer) {
   });
 };
 
-const makeTextTime = function (offerInfo) {
+const makeTextTime = (offerInfo) => {
   return `Заезд после ${offerInfo.checkin}, выезд до ${offerInfo.checkout}`;
 };
 
-const makeTextCapacity = function (offerInfo) {
+const makeTextCapacity = (offerInfo) => {
   return `${offerInfo.rooms} комнаты для ${offerInfo.guests} гостей`;
 };
 
-const renderMapCard = function (offer) {
+const renderMapCard = (offer) => {
   const newMapCard = mapCard.cloneNode(true);
   const offerInfo = offer.offer;
 
@@ -63,14 +63,14 @@ const renderMapCard = function (offer) {
 
   newMapCard.querySelector(`.popup__avatar`).src = offer.author.avatar;
 
-  newMapCard.querySelector(`.popup__close`).addEventListener(`click`, function () {
+  newMapCard.querySelector(`.popup__close`).addEventListener(`click`, () => {
     hideCard();
   });
 
   return newMapCard;
 };
 
-const discardActivePin = function () {
+const discardActivePin = () => {
   const activePin = mapPins.querySelector(`.map__pin--active`);
 
   if (activePin) {
@@ -78,7 +78,7 @@ const discardActivePin = function () {
   }
 };
 
-const hideCard = function () {
+const hideCard = () => {
   let currentCard = map.querySelector(`.map__card`);
 
   if (currentCard) {
@@ -90,13 +90,13 @@ const hideCard = function () {
   discardActivePin();
 };
 
-const onEscapeCardPress = function (evt) {
+const onEscapeCardPress = (evt) => {
   if (evt.key === window.constants.ESCAPE_KEYBOARD) {
     hideCard();
   }
 };
 
-const showCard = function (offer) {
+const showCard = (offer) => {
   hideCard();
 
   document.addEventListener(`keydown`, onEscapeCardPress);

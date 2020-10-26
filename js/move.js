@@ -4,17 +4,17 @@ const mapMainPin = document.querySelector(`.map__pin--main`);
 const originTopPin = mapMainPin.style.top;
 const originLeftPin = mapMainPin.style.left;
 
-const resetPositionPin = function () {
+const resetPositionPin = () => {
   mapMainPin.style.top = originTopPin;
   mapMainPin.style.left = originLeftPin;
 };
 
-const updatePageState = function () {
+const updatePageState = () => {
   window.card.hideCard();
   window.form.setInputAddress();
 };
 
-const onMouseDown = function (evt) {
+const onMouseDown = (evt) => {
   updatePageState();
 
   let startCoords = {
@@ -22,7 +22,7 @@ const onMouseDown = function (evt) {
     y: evt.clientY
   };
 
-  const onMouseMove = function (moveEvt) {
+  const onMouseMove = (moveEvt) => {
     moveEvt.preventDefault();
 
     let shift = {
@@ -42,7 +42,7 @@ const onMouseDown = function (evt) {
     mapMainPin.style.left = `${x}px`;
   };
 
-  const onMouseUp = function (upEvt) {
+  const onMouseUp = (upEvt) => {
     upEvt.preventDefault();
 
     updatePageState();
