@@ -7,22 +7,22 @@ const CONNECTION_ERROR_TEXT = `Произошла ошибка соединен�
 const SAVE_URL = `https://21.javascript.pages.academy/keksobooking`;
 const LOAD_URL = `https://21.javascript.pages.academy/keksobooking/data`;
 
-const makeGeneralError = function (status, text) {
+const makeGeneralError = (status, text) => {
   return `Статус ответа: ${status} ${text}`;
 };
 
-const makeTimeoutError = function (timeout) {
+const makeTimeoutError = (timeout) => {
   return `Запрос не успел выполниться за ${timeout} мс`;
 };
 
-const request = function (url, onLoad, onError, data) {
+const request = (url, onLoad, onError, data) => {
   const method = (data) ? `POST` : `GET`;
 
   const xhr = new XMLHttpRequest();
   xhr.responseType = RESPONSE_TYPE;
   xhr.timeout = TIMEOUT_IN_MS;
 
-  xhr.addEventListener(`load`, function () {
+  xhr.addEventListener(`load`, () => {
     if (xhr.status === STATUS_CODE_OK) {
       onLoad(xhr.response);
     } else {
@@ -30,11 +30,11 @@ const request = function (url, onLoad, onError, data) {
     }
   });
 
-  xhr.addEventListener(`error`, function () {
+  xhr.addEventListener(`error`, () => {
     onError(CONNECTION_ERROR_TEXT);
   });
 
-  xhr.addEventListener(`timeout`, function () {
+  xhr.addEventListener(`timeout`, () => {
     onError(makeTimeoutError(xhr.timeout));
   });
 
@@ -47,11 +47,11 @@ const request = function (url, onLoad, onError, data) {
   }
 };
 
-const load = function (onLoad, onError) {
+const load = (onLoad, onError) => {
   request(LOAD_URL, onLoad, onError);
 };
 
-const save = function (data, onLoad, onError) {
+const save = (data, onLoad, onError) => {
   request(SAVE_URL, onLoad, onError, data);
 };
 

@@ -8,7 +8,7 @@ const formPrice = window.form.formNode.querySelector(`input[name=price]`);
 const formTimeIn = window.form.formNode.querySelector(`select[name=timein]`);
 const formTimeOut = window.form.formNode.querySelector(`select[name=timeout]`);
 
-const checkRoomValidity = function () {
+const checkRoomValidity = () => {
   const capacity = +formCapacity.value;
   const rooms = +formRooms.value;
   let result = true;
@@ -24,7 +24,7 @@ const checkRoomValidity = function () {
   return result;
 };
 
-formTitle.addEventListener(`invalid`, function () {
+formTitle.addEventListener(`invalid`, () => {
   const validity = formTitle.validity;
 
   if (validity.tooShort) {
@@ -38,29 +38,29 @@ formTitle.addEventListener(`invalid`, function () {
   }
 });
 
-const onSelectRoomChange = function () {
+const onSelectRoomChange = () => {
   checkRoomValidity();
 };
 
-const onSelectCapacityChange = function () {
+const onSelectCapacityChange = () => {
   checkRoomValidity();
 };
 
 formCapacity.addEventListener(`change`, onSelectCapacityChange);
 formRooms.addEventListener(`change`, onSelectRoomChange);
 
-window.form.formNode.addEventListener(`submit`, function (evt) {
+window.form.formNode.addEventListener(`submit`, (evt) => {
   if (!checkRoomValidity()) {
     evt.preventDefault();
   }
 });
 
-const setPricePlaceholder = function () {
+const setPricePlaceholder = () => {
   const currentMinPrice = window.data.minPrice[formType.value];
   formPrice.placeholder = currentMinPrice;
 };
 
-const checkPriceValidity = function () {
+const checkPriceValidity = () => {
   const currentType = formType.value;
   const userPrice = formPrice.value;
   const currentMinPrice = window.data.minPrice[currentType];
@@ -73,12 +73,12 @@ const checkPriceValidity = function () {
   formPrice.reportValidity();
 };
 
-const onSelectTypeChange = function () {
+const onSelectTypeChange = () => {
   setPricePlaceholder();
   checkPriceValidity();
 };
 
-const onSelectPriceInput = function () {
+const onSelectPriceInput = () => {
   checkPriceValidity();
 };
 
@@ -87,11 +87,11 @@ formPrice.addEventListener(`input`, onSelectPriceInput);
 
 setPricePlaceholder();
 
-const onSelectTimeinChange = function (evt) {
+const onSelectTimeinChange = (evt) => {
   formTimeOut.value = evt.target.value;
 };
 
-const onSelectTimeoutChange = function (evt) {
+const onSelectTimeoutChange = (evt) => {
   formTimeIn.value = evt.target.value;
 };
 

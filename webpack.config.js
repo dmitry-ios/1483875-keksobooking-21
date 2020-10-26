@@ -6,7 +6,6 @@ module.exports = {
     `./js/util.js`,
     `./js/data.js`,
     `./js/backend.js`,
-    `./js/mock.js`,
     `./js/card.js`,
     `./js/render.js`,
     `./js/filter.js`,

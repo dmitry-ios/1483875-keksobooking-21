@@ -11,7 +11,7 @@ const successTemplate = document.querySelector(`#success`).content;
 const successMessage = successTemplate.querySelector(`.success`);
 const mainNode = document.querySelector(`main`);
 
-const renderOffer = function (offer) {
+const renderOffer = (offer) => {
   const pinElement = pinItem.cloneNode(true);
   const imgElement = pinElement.querySelector(`img`);
 
@@ -19,7 +19,7 @@ const renderOffer = function (offer) {
   imgElement.src = offer.author.avatar;
   imgElement.alt = offer.offer.title;
 
-  pinElement.addEventListener(`click`, function () {
+  pinElement.addEventListener(`click`, () => {
     window.card.showCard(offer);
     pinElement.classList.add(`map__pin--active`);
   });
@@ -27,7 +27,7 @@ const renderOffer = function (offer) {
   return pinElement;
 };
 
-const makeFragment = function (elements) {
+const makeFragment = (elements) => {
   const fragment = document.createDocumentFragment();
   const length = Math.min(elements.length, NUMBER_OF_PINS);
 
@@ -40,26 +40,26 @@ const makeFragment = function (elements) {
   return fragment;
 };
 
-const setupSimilarPins = function (elements) {
+const setupSimilarPins = (elements) => {
   const fragmentWithOffers = makeFragment(elements);
 
   mapPins.appendChild(fragmentWithOffers);
 };
 
-const setupMessage = function (rootNode, textNode, text, closeButton) {
-  const closeMessage = function () {
+const setupMessage = (rootNode, textNode, text, closeButton) => {
+  const closeMessage = () => {
     rootNode.remove();
     window.removeEventListener(`keydown`, onMessageEscapePress);
   };
 
-  const onMessageEscapePress = function (evt) {
+  const onMessageEscapePress = (evt) => {
     if (evt.key !== window.constants.ESCAPE_KEYBOARD) {
       return;
     }
     closeMessage();
   };
 
-  rootNode.addEventListener(`click`, function () {
+  rootNode.addEventListener(`click`, () => {
     closeMessage();
   });
 
@@ -68,7 +68,7 @@ const setupMessage = function (rootNode, textNode, text, closeButton) {
   }
 
   if (closeButton) {
-    closeButton.addEventListener(`click`, function () {
+    closeButton.addEventListener(`click`, () => {
       closeMessage();
     });
   }
@@ -77,7 +77,7 @@ const setupMessage = function (rootNode, textNode, text, closeButton) {
   mainNode.insertAdjacentElement(`afterbegin`, rootNode);
 };
 
-const showErrorMessage = function (text) {
+const showErrorMessage = (text) => {
   const errorNode = errorMessage.cloneNode(true);
   const message = errorNode.querySelector(`.error__message`);
   const closeButton = errorNode.querySelector(`.error__button`);
@@ -85,7 +85,7 @@ const showErrorMessage = function (text) {
   setupMessage(errorNode, message, text, closeButton);
 };
 
-const showSuccessMessage = function () {
+const showSuccessMessage = () => {
   const successNode = successMessage.cloneNode(true);
 
   setupMessage(successNode);

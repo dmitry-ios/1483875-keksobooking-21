@@ -8,7 +8,7 @@ const avatarPreview = document.querySelector(`.ad-form-header__preview`);
 const photoFileChooser = document.querySelector(`.ad-form__upload input[type=file]`);
 const photoPreview = document.querySelector(`.ad-form__photo`);
 
-const makeImageInfo = function (text, width, height) {
+const makeImageInfo = (text, width, height) => {
   return {
     text,
     size: {
@@ -21,7 +21,7 @@ const makeImageInfo = function (text, width, height) {
 const avatarInfo = makeImageInfo(`Аватар пользователя`, 40, 44);
 const photoInfo = makeImageInfo(`Фотография жилья`, 70, 70);
 
-const createImagePreview = function (source, info, previewNode) {
+const createImagePreview = (source, info, previewNode) => {
   const imageNode = document.createElement(`img`);
 
   imageNode.src = source;
@@ -32,19 +32,19 @@ const createImagePreview = function (source, info, previewNode) {
   previewNode.appendChild(imageNode);
 };
 
-const setupFileChooser = function (fileChooser, preview, info) {
-  fileChooser.addEventListener(`change`, function () {
+const setupFileChooser = (fileChooser, preview, info) => {
+  fileChooser.addEventListener(`change`, () => {
     const file = fileChooser.files[0];
     const fileName = file.name.toLowerCase();
 
-    const matches = FILE_TYPES.some(function (type) {
+    const matches = FILE_TYPES.some((type) => {
       return fileName.endsWith(type);
     });
 
     if (matches) {
       const reader = new FileReader();
 
-      reader.addEventListener(`load`, function () {
+      reader.addEventListener(`load`, () => {
         preview.innerHTML = ``;
         createImagePreview(reader.result, info, preview);
       });
@@ -54,7 +54,7 @@ const setupFileChooser = function (fileChooser, preview, info) {
   });
 };
 
-const resetPreviews = function () {
+const resetPreviews = () => {
   photoPreview.innerHTML = ``;
   avatarPreview.innerHTML = ``;
   createImagePreview(DEFAULT_AVATAR_SOURCE, avatarInfo, avatarPreview);

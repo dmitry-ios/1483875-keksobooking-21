@@ -11,37 +11,37 @@ const formAddress = form.querySelector(`input[name=address]`);
 
 let isActivePage = true;
 
-const disableElement = function (element) {
+const disableElement = (element) => {
   element.disabled = true;
 };
 
-const enableElement = function (element) {
+const enableElement = (element) => {
   element.disabled = false;
 };
 
-const disableFilters = function () {
+const disableFilters = () => {
   mapFilters.forEach(disableElement);
   mapFeatures.forEach(disableElement);
 };
 
-const enableFilters = function () {
+const enableFilters = () => {
   mapFilters.forEach(enableElement);
   mapFeatures.forEach(enableElement);
 };
 
-const disableInputs = function () {
+const disableInputs = () => {
   form.classList.add(`ad-form--disabled`);
   disableElement(formHeader);
   formElements.forEach(disableElement);
 };
 
-const enableInputs = function () {
+const enableInputs = () => {
   form.classList.remove(`ad-form--disabled`);
   enableElement(formHeader);
   formElements.forEach(enableElement);
 };
 
-const setInputAddress = function () {
+const setInputAddress = () => {
   let x = mapMainPin.offsetLeft;
   let y = mapMainPin.offsetTop;
 
