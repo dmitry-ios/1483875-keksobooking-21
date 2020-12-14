@@ -1,0 +1,178 @@
+[
+  {
+    "author": {
+        "avatar": "img/avatars/user05.png"
+    },
+    "offer": {
+        "title": "Милая, уютная квартира в центре Токио",
+        "address": "600, 350",
+        "price": 6000,
+        "type": "flat",
+        "rooms": 2,
+        "guests": 2,
+        "checkin": "12:00",
+        "checkout": "12:00",
+        "features": ["wifi", "dishwasher", "parking", "washer", "elevator", "conditioner"],
+        "description": "Замечательное жилье по координатам (600, 350) с wifi, dishwasher, parking, washer, elevator, conditioner",
+        "photos": ["http://o0.github.io/assets/images/tokyo/hotel1.jpg", "http://o0.github.io/assets/images/tokyo/hotel2.jpg", "http://o0.github.io/assets/images/tokyo/hotel3.jpg"]
+    },
+    "location": {
+        "x": 600,
+        "y": 350
+    }
+  },
+  {
+    "author": {
+        "avatar": "img/avatars/user01.png"
+    },
+    "offer": {
+        "title": "Футуристическое жилье в современном районе",
+        "address": "300, 300",
+        "price": 15000,
+        "type": "flat",
+        "rooms": 1,
+        "guests": 1,
+        "checkin": "14:00",
+        "checkout": "14:00",
+        "features": ["dishwasher", "washer", "elevator", "conditioner"],
+        "description": "Замечательное жилье по координатам (300, 300) с dishwasher, washer, elevator, conditioner",
+        "photos": ["http://o0.github.io/assets/images/tokyo/hotel1.jpg"]
+    },
+    "location": {
+        "x": 300,
+        "y": 300
+    }
+  },
+  {
+    "author": {
+        "avatar": "img/avatars/user02.png"
+    },
+    "offer": {
+        "title": "Дворец с роботами",
+        "address": "250, 200",
+        "price": 20000,
+        "type": "palace",
+        "rooms": 10,
+        "guests": 10,
+        "checkin": "14:00",
+        "checkout": "14:00",
+        "features": ["dishwasher", "washer", "elevator", "conditioner"],
+        "description": "Замечательное жилье по координатам (250, 200) с dishwasher, washer, elevator, conditioner",
+        "photos": ["http://o0.github.io/assets/images/tokyo/hotel1.jpg"]
+    },
+    "location": {
+        "x": 250,
+        "y": 200
+    }
+  },
+  {
+    "author": {
+        "avatar": "img/avatars/user03.png"
+    },
+    "offer": {
+        "title": "Личный дом с котиками и собачками",
+        "address": "280, 550",
+        "price": 5000,
+        "type": "house",
+        "rooms": 4,
+        "guests": 4,
+        "checkin": "12:00",
+        "checkout": "12:00",
+        "features": ["wifi", "conditioner"],
+        "description": "Замечательное жилье по координатам (150, 200) с wifi, parking, conditioner",
+        "photos": ["http://o0.github.io/assets/images/tokyo/hotel1.jpg"]
+    },
+    "location": {
+        "x": 280,
+        "y": 550
+    }
+  },
+  {
+    "author": {
+        "avatar": "img/avatars/user04.png"
+    },
+    "offer": {
+        "title": "Бунгало со всеми удобствами",
+        "address": "793, 162",
+        "price": 100,
+        "type": "bungalow",
+        "rooms": 1,
+        "guests": 1,
+        "checkin": "13:00",
+        "checkout": "13:00",
+        "features": ["conditioner"],
+        "description": "Замечательное жилье по координатам (793, 162) с wifi, parking, conditioner",
+        "photos": ["http://o0.github.io/assets/images/tokyo/hotel1.jpg", "http://o0.github.io/assets/images/tokyo/hotel2.jpg"]
+    },
+    "location": {
+        "x": 793,
+        "y": 162
+    }
+  },
+  {
+    "author": {
+        "avatar": "img/avatars/user06.png"
+    },
+    "offer": {
+        "title": "Маленькая комнатка со скоростным интернетом",
+        "address": "1055, 615",
+        "price": 1500,
+        "type": "flat",
+        "rooms": 1,
+        "guests": 1,
+        "checkin": "12:00",
+        "checkout": "12:00",
+        "features": ["wifi", "dishwasher", "parking"],
+        "description": "Замечательное жилье по координатам (1055, 615) с wifi, parking, conditioner",
+        "photos": ["http://o0.github.io/assets/images/tokyo/hotel1.jpg", "http://o0.github.io/assets/images/tokyo/hotel2.jpg", "http://o0.github.io/assets/images/tokyo/hotel3.jpg"]
+    },
+    "location": {
+        "x": 1055,
+        "y": 615
+    }
+  },
+  {
+    "author": {
+        "avatar": "img/avatars/user07.png"
+    },
+    "offer": {
+        "title": "Большая квартира для большой компании",
+        "address": "616, 513",
+        "price": 1500,
+        "type": "flat",
+        "rooms": 3,
+        "guests": 3,
+        "checkin": "14:00",
+        "checkout": "14:00",
+        "features": ["wifi", "dishwasher", "parking", "washer", "elevator", "conditioner"],
+        "description": "Замечательное жилье по координатам (616, 513) с wifi, parking, conditioner",
+        "photos": ["http://o0.github.io/assets/images/tokyo/hotel1.jpg", "http://o0.github.io/assets/images/tokyo/hotel2.jpg", "http://o0.github.io/assets/images/tokyo/hotel3.jpg"]
+    },
+    "location": {
+        "x": 616,
+        "y": 513
+    }
+  },
+  {
+    "author": {
+        "avatar": "img/avatars/user08.png"
+    },
+    "offer": {
+        "title": "Романтическое гнездышко в городе будущего",
+        "address": "415, 590",
+        "price": 7050,
+        "type": "house",
+        "rooms": 4,
+        "guests": 8,
+        "checkin": "14:00",
+        "checkout": "14:00",
+        "features": ["wifi", "dishwasher", "parking", "washer", "elevator", "conditioner"],
+        "description": "Замечательное жилье по координатам (415, 590) с wifi, parking, conditioner",
+        "photos": ["http://o0.github.io/assets/images/tokyo/hotel1.jpg", "http://o0.github.io/assets/images/tokyo/hotel3.jpg"]
+    },
+    "location": {
+        "x": 415,
+        "y": 590
+    }
+  }
+]

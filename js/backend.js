@@ -4,8 +4,8 @@ const RESPONSE_TYPE = `json`;
 const TIMEOUT_IN_MS = 5000;
 const STATUS_CODE_OK = 200;
 const CONNECTION_ERROR_TEXT = `Произошла ошибка соединения`;
-const SAVE_URL = `https://21.javascript.pages.academy/keksobooking`;
-const LOAD_URL = `https://21.javascript.pages.academy/keksobooking/data`;
+const SAVE_URL = `https://echo.htmlacademy.ru`;
+const LOAD_URL = `https://compassionate-austin-7a0844.netlify.app/assets/data.json`;
 
 const makeGeneralError = (status, text) => {
   return `Статус ответа: ${status} ${text}`;
